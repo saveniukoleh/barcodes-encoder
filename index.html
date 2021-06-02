@@ -64,7 +64,7 @@
             const listener = new THREE.AudioListener();
             camera.add(listener);
             const audioLoader = new THREE.AudioLoader();
-                  const fontLoader = new THREE.FontLoader();
+            const fontLoader = new THREE.FontLoader();
 
             // Объявляем стандартный рендерер и добавляем его в тег body html документа
             renderer = new THREE.WebGLRenderer({
@@ -161,6 +161,14 @@
                   markerRoots[i] = new THREE.Group();
             }
 
+            let font;
+            fontLoader.load("./fonts/SF_Pro_Text_Semibold.typeface.json",
+                                (response) => {
+                                    font = response;
+                                    initScene();
+                                }
+            );
+            function initScene () {
             // Проходимся по каждому маркеру из массива и добавляем его в главный контейнер 
             for (let i = 0; i < 64; i++) {
               mainContainer.add(markerRoots[i]);
@@ -255,10 +263,6 @@
                       markerRoots[i].add(mesh2);
                       break;
                   case 'text':
-                            fontLoader.load(
-                                "./fonts/SF_Pro_Text_Semibold.typeface.json",
-                                (response) => {
-                                    const font = response;
                                     const textGeometry = new THREE.TextGeometry(plainTexts[i], {
                                         font: font,
                                         size: 0.5,
@@ -283,8 +287,6 @@
                                     textMesh.rotation.x = -Math.PI / 2;
 
                                     markerRoots[i].add(textMesh);
-                                }
-                            );
                             break;
                   case 'controller':
                       controller = new THREE.Mesh(
@@ -329,6 +331,7 @@
 
           // Добавляем главный контейнер на сцену
           scene.add(mainContainer);
+        }
       }
 
       function checkController() {
